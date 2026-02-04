@@ -1,8 +1,13 @@
 # Waveshare ESP32-S3-Touch-LCD-4.3C Product Engineering Sample Program
 
+[中文](README_ZH.md)
+
 ESP32-S3-Touch-LCD-4.3C integrates a 4.3-inch capacitive touch screen and audio module, supporting Xiaozhi AI voice interaction and LVGL graphical interface. It combines display, touch and voice functions, enabling you to easily create an intelligent human-computer interaction terminal.
 
-![主图](./assets/Product-1.webp)
+- [Purchase Link](https://www.waveshare.com/esp32-s3-touch-lcd-4.3c.htm)
+- [Documentation](https://docs.waveshare.com/ESP32-S3-Touch-LCD-4.3C)
+
+![Product Image](./assets/Product-1.webp)
 
 ---
 
@@ -27,7 +32,7 @@ We welcome contributions! Here’s how you can help:
 
 If you encounter any issues:
 
-- Check the [Issues](https://github.com/waveshareteam/ESP32-P4-WIFI6-Touch-LCD-X/issues) section.
+- Check the [Issues](https://github.com/waveshareteam/ESP32-S3-Touch-LCD-4.3C/issues) section.
 - Create a new issue with detailed information.
 - Refer to the documentation for troubleshooting tips.
 - Contact the Waveshare team and provide the order number to obtain technical support.
@@ -36,7 +41,7 @@ If you encounter any issues:
 
 ## 📜 License
 
-This repository is licensed under the Apache License License. See the `LICENSE` file for details.
+This repository is licensed under the Apache License License. See the [LICENSE](LICENSE) file for details.
 
 ---
 
