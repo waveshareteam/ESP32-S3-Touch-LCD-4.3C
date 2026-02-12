@@ -58,7 +58,7 @@ void app_main()
     waveshare_esp32_s3_rgb_lcd_init(); 
 
     // Turn on the LCD backlight
-    wavesahre_rgb_lcd_bl_on();         
+    waveshare_rgb_lcd_bl_on();         
 
     // EXAMPLE_PIN_NUM_TOUCH_INT
     // Allocate memory for the LCD's frame buffer
@@ -92,7 +92,7 @@ void app_main()
         if (bmp_num == 0)
         {
             Paint_DrawString_EN(200, 280, "There is no BMP file in the memory card.", &Font24, RED, WHITE); // Display prompt
-            wavesahre_rgb_lcd_display(BlackImage);
+            waveshare_rgb_lcd_display(BlackImage);
             return;
         }
         else
@@ -103,7 +103,7 @@ void app_main()
             Paint_DrawLine(575, 465, 600, 450, RED, DOT_PIXEL_2X2, LINE_STYLE_SOLID); 
 
             // Display the initial image on the screen
-            wavesahre_rgb_lcd_display(BlackImage);
+            waveshare_rgb_lcd_display(BlackImage);
         }
         
     }
@@ -111,7 +111,7 @@ void app_main()
     {
         // If SD card initialization fails
         Paint_DrawString_EN(200, 200, "SD Card Fail!", &Font24, BLACK, WHITE);
-        wavesahre_rgb_lcd_display(BlackImage);
+        waveshare_rgb_lcd_display(BlackImage);
         return;
         
     }
@@ -153,7 +153,7 @@ void app_main()
                 Paint_DrawLine(575, 435, 600, 450, RED, DOT_PIXEL_2X2, LINE_STYLE_SOLID);
                 Paint_DrawLine(575, 465, 600, 450, RED, DOT_PIXEL_2X2, LINE_STYLE_SOLID);
 
-                wavesahre_rgb_lcd_display(BlackImage);  // Update display
+                waveshare_rgb_lcd_display(BlackImage);  // Update display
                 
                 prev_x = point_data.x[0];  // Update previous touch position
                 prev_y = point_data.y[0];
@@ -179,7 +179,7 @@ void app_main()
                 Paint_DrawLine(575, 435, 600, 450, RED, DOT_PIXEL_2X2, LINE_STYLE_SOLID);
                 Paint_DrawLine(575, 465, 600, 450, RED, DOT_PIXEL_2X2, LINE_STYLE_SOLID);
 
-                wavesahre_rgb_lcd_display(BlackImage);  // Update display
+                waveshare_rgb_lcd_display(BlackImage);  // Update display
 
                 prev_x = point_data.x[0];  // Update previous touch position
                 prev_y = point_data.y[0];

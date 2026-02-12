@@ -28,7 +28,7 @@ void app_main()
     DEV_I2C_Init(); // Initialize I2C port
     IO_EXTENSION_Init(); // Initialize the IO EXTENSION GPIO chip 
 
-    wavesahre_rgb_lcd_bl_off(); // Turn off the LCD backlight
+    waveshare_rgb_lcd_bl_off(); // Turn off the LCD backlight
 
     tp_handle = touch_gt911_init(DEV_I2C_Get_Bus_Device()); // Initialize the GT911 touch screen controller
     panel_handle = waveshare_esp32_s3_rgb_lcd_init(); // Initialize the Waveshare ESP32-S3 RGB LCD hardware
@@ -71,5 +71,5 @@ void app_main()
         // Release the mutex
         lvgl_port_unlock();
     }
-    wavesahre_rgb_lcd_bl_on(); // Turn on the LCD backlight
+    waveshare_rgb_lcd_bl_on(); // Turn on the LCD backlight
 }

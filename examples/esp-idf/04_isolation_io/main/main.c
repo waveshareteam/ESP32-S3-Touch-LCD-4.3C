@@ -29,9 +29,9 @@ void app_main()
     waveshare_esp32_s3_rgb_lcd_init(); 
 
     // Turn on the LCD backlight
-    wavesahre_rgb_lcd_bl_on();         
+    waveshare_rgb_lcd_bl_on();         
     // Uncomment the following line to turn off the backlight if needed
-    // wavesahre_rgb_lcd_bl_off();
+    // waveshare_rgb_lcd_bl_off();
 
     // Allocate memory for the screen's frame buffer
     UDOUBLE Imagesize = EXAMPLE_LCD_H_RES * EXAMPLE_LCD_V_RES * 2; // Each pixel takes 2 bytes in RGB565
@@ -82,7 +82,7 @@ void app_main()
             printf("DI & DO OK!!!\r\n"); // DI and DO are functioning properly
             Paint_Clear(GREEN);
             // Display the gradient on the screen
-            wavesahre_rgb_lcd_display(BlackImage);
+            waveshare_rgb_lcd_display(BlackImage);
             break;
         }
         else
@@ -94,7 +94,7 @@ void app_main()
                 printf("DI & DO Failure!!!\r\n"); // DI and DO are not functioning
                 Paint_Clear(RED);
                 // Display the gradient on the screen
-                wavesahre_rgb_lcd_display(BlackImage);
+                waveshare_rgb_lcd_display(BlackImage);
                 break;
             }
         }

@@ -21,7 +21,7 @@ void setup() {
   // Initialize the Waveshare ESP32-S3 RGB LCD
   waveshare_esp32_s3_rgb_lcd_init(); 
   // Turn on the LCD backlight
-  wavesahre_rgb_lcd_bl_on();  
+  waveshare_rgb_lcd_bl_on();  
 
   UDOUBLE Imagesize = EXAMPLE_LCD_H_RES * EXAMPLE_LCD_V_RES * 2; // Each pixel takes 2 bytes in RGB565
   UBYTE *BlackImage;
@@ -69,7 +69,7 @@ void setup() {
             printf("DI & DO OK!!!\r\n"); // DI and DO are functioning properly
             Paint_Clear(GREEN);
             // Display the gradient on the screen
-            wavesahre_rgb_lcd_display(BlackImage);
+            waveshare_rgb_lcd_display(BlackImage);
             break;
         }
         else
@@ -81,7 +81,7 @@ void setup() {
                 printf("DI & DO Failure!!!\r\n"); // DI and DO are not functioning
                 Paint_Clear(RED);
                 // Display the gradient on the screen
-                wavesahre_rgb_lcd_display(BlackImage);
+                waveshare_rgb_lcd_display(BlackImage);
                 break;
             }
         }

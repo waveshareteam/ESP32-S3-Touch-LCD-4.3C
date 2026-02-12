@@ -17,7 +17,7 @@ void setup() {
   // Initialize the Waveshare ESP32-S3 RGB LCD
   waveshare_esp32_s3_rgb_lcd_init(); 
   // Turn on the LCD backlight
-  wavesahre_rgb_lcd_bl_on();  
+  waveshare_rgb_lcd_bl_on();  
   // Frame buffer pointers for double buffering
   void *buf1 = NULL;
   void *buf2 = NULL;
@@ -42,7 +42,7 @@ void setup() {
   memcpy(buf1, buf2, EXAMPLE_LCD_H_RES * EXAMPLE_LCD_V_RES * 2);
 
   // Display the initial blank screen on the LCD
-  wavesahre_rgb_lcd_display((uint8_t *)buf1);
+  waveshare_rgb_lcd_display((uint8_t *)buf1);
   
   // Arrays to store previous touch point positions and their active states
   static uint16_t prev_x[ESP_LCD_TOUCH_MAX_POINTS];
@@ -104,7 +104,7 @@ void setup() {
           vTaskDelay(20);
 
           // Display the content from buf2
-          wavesahre_rgb_lcd_display((uint8_t *)buf2);
+          waveshare_rgb_lcd_display((uint8_t *)buf2);
 
           // Sync buf2 content to buf1
           memcpy(buf1, buf2, EXAMPLE_LCD_H_RES * EXAMPLE_LCD_V_RES * 2);
@@ -119,7 +119,7 @@ void setup() {
           vTaskDelay(20);
 
           // Display the content from buf1
-          wavesahre_rgb_lcd_display((uint8_t *)buf1);
+          waveshare_rgb_lcd_display((uint8_t *)buf1);
 
           // Sync buf1 content to buf2
           memcpy(buf2, buf1, EXAMPLE_LCD_H_RES * EXAMPLE_LCD_V_RES * 2);

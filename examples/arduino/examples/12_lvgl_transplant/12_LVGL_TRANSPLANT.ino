@@ -17,7 +17,7 @@ void setup() {
     panel_handle = waveshare_esp32_s3_rgb_lcd_init(); 
 
     // Turn on the LCD backlight
-    wavesahre_rgb_lcd_bl_on();   
+    waveshare_rgb_lcd_bl_on();   
 
     // Initialize LVGL with the panel and touch handles
     ESP_ERROR_CHECK(lvgl_port_init(panel_handle, tp_handle));

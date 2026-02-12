@@ -26,8 +26,8 @@ void app_main()
   
     // Initialize the Waveshare ESP32-S3 RGB LCD
     waveshare_esp32_s3_rgb_lcd_init();
-    wavesahre_rgb_lcd_bl_on();         // Turn on the LCD backlight
-    // wavesahre_rgb_lcd_bl_off();     // Uncomment to turn off the backlight if needed
+    waveshare_rgb_lcd_bl_on();         // Turn on the LCD backlight
+    // waveshare_rgb_lcd_bl_off();     // Uncomment to turn off the backlight if needed
 
     // Allocate memory for the LCD's frame buffer
     UDOUBLE Imagesize = EXAMPLE_LCD_H_RES * EXAMPLE_LCD_V_RES * 2; // Each pixel uses 2 bytes in RGB565 format
@@ -81,5 +81,5 @@ void app_main()
         Paint_DrawString_EN(150, 240, "SD Card Fail!", &Font24, CYAN, BLACK);
 
     // Display the prepared canvas on the LCD
-    wavesahre_rgb_lcd_display(BlackImage);
+    waveshare_rgb_lcd_display(BlackImage);
 }

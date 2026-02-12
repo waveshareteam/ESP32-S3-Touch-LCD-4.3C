@@ -53,9 +53,9 @@ void app_main()
     waveshare_esp32_s3_rgb_lcd_init(); 
 
     // Turn on the LCD backlight
-    wavesahre_rgb_lcd_bl_on();         
+    waveshare_rgb_lcd_bl_on();         
     // Uncomment the next line to turn off the backlight if needed
-    // wavesahre_rgb_lcd_bl_off();
+    // waveshare_rgb_lcd_bl_off();
 
     // Allocate memory for the screen's framebuffer (image buffer)
     UDOUBLE Imagesize = EXAMPLE_LCD_H_RES * EXAMPLE_LCD_V_RES * 2;  // Each pixel takes 2 bytes in RGB565 format
@@ -85,7 +85,7 @@ void app_main()
     Paint_DrawString_EN(10, 240, "800x480", &Font24, RED, WHITE);                // Display screen resolution
     Paint_DrawLine(400, 0, 400, 480, BLUE, DOT_PIXEL_2X2, LINE_STYLE_SOLID);  // Draw a vertical line to separate sections
     Paint_DrawString_EN(440, 0, "Scanning now...", &Font24, BLACK, WHITE); // Show scanning status message
-    wavesahre_rgb_lcd_display(BlackImage);  // Refresh the display with the updated image
+    waveshare_rgb_lcd_display(BlackImage);  // Refresh the display with the updated image
     
     // Clear the top section of the screen to display scanning results
     Paint_ClearWindows(440, 0, 800, 25, WHITE);
@@ -107,5 +107,5 @@ void app_main()
     }
 
     // Update the screen with the new image (BlackImage is the framebuffer being drawn to)
-    wavesahre_rgb_lcd_display(BlackImage);  // Refresh the display to show the updated list of networks
+    waveshare_rgb_lcd_display(BlackImage);  // Refresh the display to show the updated list of networks
 }

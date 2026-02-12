@@ -94,11 +94,11 @@ esp_lcd_panel_handle_t waveshare_esp32_s3_rgb_lcd_init();
 /**
  * @brief Turn on the LCD backlight.
  */
-void wavesahre_rgb_lcd_bl_on();
+void waveshare_rgb_lcd_bl_on();
 /**
  * @brief Turn off the LCD backlight.
  */
-void wavesahre_rgb_lcd_bl_off();
+void waveshare_rgb_lcd_bl_off();
 
 /**
  * @brief Display a rectangular region of an image on the RGB LCD.
@@ -109,14 +109,14 @@ void wavesahre_rgb_lcd_bl_off();
  * @param Yend Ending Y coordinate of the region.
  * @param Image Pointer to the image data buffer.
  */
-void wavesahre_rgb_lcd_display_window(int16_t Xstart, int16_t Ystart, int16_t Xend, int16_t Yend, uint8_t *Image);
+void waveshare_rgb_lcd_display_window(int16_t Xstart, int16_t Ystart, int16_t Xend, int16_t Yend, uint8_t *Image);
 
 /**
  * @brief Display a full-frame image on the RGB LCD.
  *
  * @param Image Pointer to the image data buffer.
  */
-void wavesahre_rgb_lcd_display(uint8_t *Image);
+void waveshare_rgb_lcd_display(uint8_t *Image);
 
 /**
  * @brief Retrieve pointers to the frame buffers for double buffering.

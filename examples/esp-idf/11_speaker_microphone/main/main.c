@@ -34,7 +34,7 @@ void play_or_pause(bool play)
         Paint_DrawLine(390, 435, 390, 465, RED, DOT_PIXEL_2X2, LINE_STYLE_SOLID);
         Paint_DrawLine(410, 435, 410, 465, RED, DOT_PIXEL_2X2, LINE_STYLE_SOLID);
         Paint_DrawString_EN(200, 150, "Start recording...", &Font48, BLACK, WHITE);
-        wavesahre_rgb_lcd_display(BlackImage);
+        waveshare_rgb_lcd_display(BlackImage);
         ESP_LOGI(TAG, "Start recording...");
 
         size_t total_bytes = 0;
@@ -53,7 +53,7 @@ void play_or_pause(bool play)
         Paint_DrawLine(420, 450, 390, 465, RED, DOT_PIXEL_2X2, LINE_STYLE_SOLID);
         Paint_DrawLine(390, 435, 390, 465, RED, DOT_PIXEL_2X2, LINE_STYLE_SOLID);
         Paint_DrawString_EN(250, 150, "Recording done.", &Font48, BLACK, WHITE);
-        wavesahre_rgb_lcd_display(BlackImage);
+        waveshare_rgb_lcd_display(BlackImage);
     }
     else
     {
@@ -61,7 +61,7 @@ void play_or_pause(bool play)
         Paint_DrawLine(390, 435, 390, 465, RED, DOT_PIXEL_2X2, LINE_STYLE_SOLID);
         Paint_DrawLine(410, 435, 410, 465, RED, DOT_PIXEL_2X2, LINE_STYLE_SOLID);
         Paint_DrawString_EN(200, 150, "Start playing...", &Font48, BLACK, WHITE);
-        wavesahre_rgb_lcd_display(BlackImage);
+        waveshare_rgb_lcd_display(BlackImage);
         ESP_LOGI(TAG, "Start playing...");
 
         size_t total_bytes = 0;
@@ -80,7 +80,7 @@ void play_or_pause(bool play)
         Paint_DrawLine(420, 450, 390, 465, RED, DOT_PIXEL_2X2, LINE_STYLE_SOLID);
         Paint_DrawLine(390, 435, 390, 465, RED, DOT_PIXEL_2X2, LINE_STYLE_SOLID);
         Paint_DrawString_EN(250, 150, "Playback done.", &Font48, BLACK, WHITE);
-        wavesahre_rgb_lcd_display(BlackImage);
+        waveshare_rgb_lcd_display(BlackImage);
     }
 }
 
@@ -91,7 +91,7 @@ void app_main()
     IO_EXTENSION_Init();
     touch_gt911_init(DEV_I2C_Get_Bus_Device());
     waveshare_esp32_s3_rgb_lcd_init();
-    wavesahre_rgb_lcd_bl_on();
+    waveshare_rgb_lcd_bl_on();
 
     // Allocate LCD frame buffer
     UDOUBLE Imagesize = EXAMPLE_LCD_H_RES * EXAMPLE_LCD_V_RES * 2;
@@ -109,7 +109,7 @@ void app_main()
     // Draw initial red record button
     Paint_DrawCircle(405, 450, 15, RED, DOT_PIXEL_2X2, DRAW_FILL_FULL);
     Paint_DrawString_EN(100, 150, "Click to start recording", &Font48, BLACK, WHITE);
-    wavesahre_rgb_lcd_display(BlackImage);
+    waveshare_rgb_lcd_display(BlackImage);
 
     // Initialize speaker codec
     codec_init();

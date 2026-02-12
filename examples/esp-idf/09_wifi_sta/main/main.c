@@ -46,9 +46,9 @@ void app_main()
     waveshare_esp32_s3_rgb_lcd_init(); 
 
     // Turn on the LCD backlight
-    wavesahre_rgb_lcd_bl_on();         
+    waveshare_rgb_lcd_bl_on();         
     // Uncomment the next line to turn off the backlight if needed
-    // wavesahre_rgb_lcd_bl_off();
+    // waveshare_rgb_lcd_bl_off();
 
     // Allocate memory for the screen's framebuffer (image buffer)
     UDOUBLE Imagesize = EXAMPLE_LCD_H_RES * EXAMPLE_LCD_V_RES * 2;  // Each pixel takes 2 bytes in RGB565 format
@@ -78,11 +78,11 @@ void app_main()
     Paint_DrawString_EN(440, 160, "wifi connecting......", &Font24, BLACK, WHITE); // Display Wi-Fi connection status
     Paint_DrawLine(400, 0, 400, 480, BLUE, DOT_PIXEL_2X2, LINE_STYLE_SOLID);  // Draw a vertical line on the display
 
-    wavesahre_rgb_lcd_display(BlackImage);  // Refresh the display with the updated image (BlackImage is the framebuffer)
+    waveshare_rgb_lcd_display(BlackImage);  // Refresh the display with the updated image (BlackImage is the framebuffer)
     
     // Initialize Wi-Fi in STA mode and attempt to connect to the specified SSID and password
     wifi_sta_init((uint8_t *)USER_SSID, (uint8_t *)USER_PASS, WIFI_AUTH_WPA2_PSK);
 
     // Update the screen with the new image (BlackImage is the framebuffer being drawn to)
-    wavesahre_rgb_lcd_display(BlackImage);  // Refresh the display again to show the updated image
+    waveshare_rgb_lcd_display(BlackImage);  // Refresh the display again to show the updated image
 }

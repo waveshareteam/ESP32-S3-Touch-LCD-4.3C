@@ -19,7 +19,7 @@ void setup() {
   // Initialize the Waveshare ESP32-S3 RGB LCD
   waveshare_esp32_s3_rgb_lcd_init(); 
   // Turn on the LCD backlight
-  wavesahre_rgb_lcd_bl_on();  
+  waveshare_rgb_lcd_bl_on();  
   UDOUBLE Imagesize = EXAMPLE_LCD_H_RES * EXAMPLE_LCD_V_RES * 2; // Each pixel takes 2 bytes in RGB565
   UBYTE *BlackImage;
   if ((BlackImage = (UBYTE *)malloc(Imagesize)) == NULL) // Allocate memory
@@ -60,7 +60,7 @@ void setup() {
         Paint_DrawRectangle(751, 1, 800, 480, 0x0001, DOT_PIXEL_1X1, DRAW_FILL_FULL); 
 
         // Display the gradient on the screen
-        wavesahre_rgb_lcd_display(BlackImage);
+        waveshare_rgb_lcd_display(BlackImage);
         vTaskDelay(1000);
 
         Paint_Clear(WHITE);
@@ -93,14 +93,14 @@ void setup() {
         Paint_DrawString_CN(1, 190, "你好Abc", &Font24CN, WHITE, BLUE);
 
         // Update the display with the newly drawn elements (currently displaying BlackImage)
-        wavesahre_rgb_lcd_display(BlackImage);
+        waveshare_rgb_lcd_display(BlackImage);
         vTaskDelay(1000); // Delay for 1000ms to allow the screen to update
 
         // Draw a bitmap at coordinates (0,0) with size 800x480 using the provided gImage_Bitmap
         Paint_BmpWindows(0, 0, gImage_Bitmap, 800, 480);
 
         // Update the screen with the updated image (BlackImage is the framebuffer being drawn to)
-        wavesahre_rgb_lcd_display(BlackImage); // Refresh the display with the new content
+        waveshare_rgb_lcd_display(BlackImage); // Refresh the display with the new content
         vTaskDelay(1000); // Delay for 1000ms to allow the screen to update
 
         // Draw an image resource gImage_picture at coordinates (0,0) with size 800x480
@@ -110,7 +110,7 @@ void setup() {
         // Paint_DrawBitMap(gImage_picture);
 
         // Update the screen with the new image (BlackImage is the framebuffer being drawn to)
-        wavesahre_rgb_lcd_display(BlackImage); // Refresh the display to show the updated image
+        waveshare_rgb_lcd_display(BlackImage); // Refresh the display to show the updated image
 
     }
     else
@@ -138,7 +138,7 @@ void setup() {
         Paint_DrawRectangle(1, 750, 480, 800, 0x0001, DOT_PIXEL_1X1, DRAW_FILL_FULL); 
 
         // Display the gradient on the screen
-        wavesahre_rgb_lcd_display(BlackImage);
+        waveshare_rgb_lcd_display(BlackImage);
         vTaskDelay(1000);
 
         Paint_Clear(WHITE);
@@ -171,14 +171,14 @@ void setup() {
         Paint_DrawString_CN(1, 190, "你好Abc", &Font24CN, WHITE, BLUE);
 
         // Update the display with the newly drawn elements (currently displaying BlackImage)
-        wavesahre_rgb_lcd_display(BlackImage);
+        waveshare_rgb_lcd_display(BlackImage);
         vTaskDelay(1000); // Delay for 1000ms to allow the screen to update
 
         // Draw a bitmap at coordinates (0,0) with size 800x480 using the provided gImage_Bitmap
         Paint_BmpWindows(0, 0, gImage_Bitmap_90, 480, 800);
 
         // Update the screen with the updated image (BlackImage is the framebuffer being drawn to)
-        wavesahre_rgb_lcd_display(BlackImage); // Refresh the display with the new content
+        waveshare_rgb_lcd_display(BlackImage); // Refresh the display with the new content
         vTaskDelay(1000); // Delay for 1000ms to allow the screen to update
 
         // Draw an image resource gImage_picture at coordinates (0,0) with size 800x480
@@ -188,7 +188,7 @@ void setup() {
         // Paint_DrawBitMap(gImage_picture);
 
         // Update the screen with the new image (BlackImage is the framebuffer being drawn to)
-        wavesahre_rgb_lcd_display(BlackImage); // Refresh the display to show the updated image
+        waveshare_rgb_lcd_display(BlackImage); // Refresh the display to show the updated image
 
     
     }

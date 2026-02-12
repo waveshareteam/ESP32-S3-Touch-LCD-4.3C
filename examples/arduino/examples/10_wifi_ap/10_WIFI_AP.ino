@@ -28,9 +28,9 @@ void setup() {
     waveshare_esp32_s3_rgb_lcd_init(); 
 
     // Turn on the LCD backlight for visibility
-    wavesahre_rgb_lcd_bl_on();
+    waveshare_rgb_lcd_bl_on();
     // Uncomment the next line to turn off the backlight if needed
-    // wavesahre_rgb_lcd_bl_off();
+    // waveshare_rgb_lcd_bl_off();
 
     // Allocate memory for the framebuffer (image buffer) in PSRAM
     UDOUBLE Imagesize = EXAMPLE_LCD_H_RES * EXAMPLE_LCD_V_RES * 2;  // Each pixel takes 2 bytes in RGB565 format
@@ -53,13 +53,13 @@ void setup() {
     Paint_DrawString_EN(10, 240, "800x480", &Font24, RED, WHITE);              // Display resolution
     Paint_DrawLine(400, 0, 400, 480, BLUE, DOT_PIXEL_2X2, LINE_STYLE_SOLID);   // Draw a vertical separator line
     Paint_DrawString_EN(430, 160, "Connected: 0", &Font24, BLACK, WHITE);        // Display initial connection status
-    wavesahre_rgb_lcd_display(BlackImage);  // Refresh the display to show the initial static messages
+    waveshare_rgb_lcd_display(BlackImage);  // Refresh the display to show the initial static messages
 
     // Initialize Wi-Fi functionality and attempt to connect to the provided network
     wifi_ap_init(USER_SSID, USER_PASS); 
     
     // Update the display with the new Wi-Fi scan results
-    wavesahre_rgb_lcd_display(BlackImage);
+    waveshare_rgb_lcd_display(BlackImage);
     static uint8_t connection_num = 0;
     while (1) 
     {
@@ -90,7 +90,7 @@ void setup() {
             Serial.println("");
         }
         // Update the display with the new Wi-Fi scan results
-        wavesahre_rgb_lcd_display(BlackImage);
+        waveshare_rgb_lcd_display(BlackImage);
         connection_num = n;
       }
       delay(100);

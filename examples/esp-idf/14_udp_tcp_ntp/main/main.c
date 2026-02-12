@@ -33,7 +33,7 @@ void peripheral_init(void)
     IO_EXTENSION_Init();
     // Initialize LCD and Touch
     esp_lcd_panel_handle_t panel_handle = waveshare_esp32_s3_rgb_lcd_init();
-    wavesahre_rgb_lcd_bl_on();
+    waveshare_rgb_lcd_bl_on();
     esp_lcd_touch_handle_t tp_handle = touch_gt911_init(DEV_I2C_Get_Bus_Device());
     // Initialize LVGL
     ESP_ERROR_CHECK(lvgl_port_init(panel_handle, tp_handle));
