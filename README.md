@@ -7,7 +7,7 @@ ESP32-S3-Touch-LCD-4.3C integrates a 4.3-inch capacitive touch screen and audio 
 - [Purchase Link](https://www.waveshare.com/esp32-s3-touch-lcd-4.3c.htm)
 - [Documentation](https://docs.waveshare.com/ESP32-S3-Touch-LCD-4.3C)
 
-![Product Image](./assets/Product-1.webp)
+<img src="assets/Product-1.webp" alt="Waveshare ESP32-S3-Touch-LCD-4.3C" width="500">
 
 ---
 

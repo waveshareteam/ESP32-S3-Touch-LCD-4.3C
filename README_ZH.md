@@ -7,7 +7,7 @@ ESP32-S3-Touch-LCD-4.3C 集成了 4.3 英寸电容触摸屏和音频模块，支
 - [购买链接](https://www.waveshare.net/shop/ESP32-S3-Touch-LCD-4.3C.htm)
 - [产品文档](https://docs.waveshare.net/ESP32-S3-Touch-LCD-4.3C/)
 
-![主图](./assets/Product-1.webp)
+<img src="assets/Product-1.webp" alt="Waveshare ESP32-S3-Touch-LCD-4.3C" width="500">
 
 ---
 
