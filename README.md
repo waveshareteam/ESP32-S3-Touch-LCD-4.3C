@@ -1,55 +1,46 @@
-# Waveshare ESP32-S3-Touch-LCD-4.3C Product Engineering Sample Program
+# Waveshare ESP32-S3-Touch-LCD-4.3C
 
 [中文](README_ZH.md)
 
-ESP32-S3-Touch-LCD-4.3C integrates a 4.3-inch capacitive touch screen and audio module, supporting Xiaozhi AI voice interaction and LVGL graphical interface. It combines display, touch and voice functions, enabling you to easily create an intelligent human-computer interaction terminal.
+The ESP32-S3-Touch-LCD-4.3C is a low-cost, high-performance development board built around the ESP32-S3R8 (dual-core Xtensa LX7 @ 240 MHz, 8 MB PSRAM, 16 MB Flash) with 2.4 GHz Wi-Fi and Bluetooth 5 LE. It integrates a 4.3-inch 800 × 480 capacitive touch LCD and an audio module (ES8311 + ES7210), along with an RTC, TF card slot, USB Type-C, isolated digital I/O, and a battery interface, enabling smooth LVGL GUI and AI voice interaction for IoT, mobile devices, and smart home applications.
 
 - [Purchase Link](https://www.waveshare.com/esp32-s3-touch-lcd-4.3c.htm)
 - [Documentation](https://docs.waveshare.com/ESP32-S3-Touch-LCD-4.3C)
 
 <img src="assets/Product-1.webp" alt="Waveshare ESP32-S3-Touch-LCD-4.3C" width="500">
 
----
+## Repository Structure
 
-## 🔧 Configuration
+This repository provides sample programs, factory firmware, and hardware design files for the ESP32-S3-Touch-LCD-4.3C.
 
-You can find detailed configuration information on the product wiki page
+```
+.
+├── examples/        # Sample programs for ESP-IDF and Arduino
+├── firmware/        # Factory test firmware (.bin) and SD card resources
+├── hardware/        # Schematics (PDF) and dimension drawings (2D/3D)
+└── assets/          # Images used in documentation
+```
 
----
+## Getting Started
 
-## 🛠️ Contributing
+A pre-built test firmware is available in [`firmware/`](firmware). For build environments, flashing steps, pin mappings, and configuration, refer to the [documentation page](https://docs.waveshare.com/ESP32-S3-Touch-LCD-4.3C).
 
-We welcome contributions! Here’s how you can help:
+## Contributing
+
+We welcome contributions! Here's how you can help:
 
 1. Fork the repository.
 2. Create a new branch for your feature or bug fix.
 3. Commit your changes with clear descriptions.
 4. Submit a pull request for review.
 
----
+## Issues and Support
 
-## 🧩 Issues and Support
+Open an [issue](https://github.com/waveshareteam/ESP32-S3-Touch-LCD-4.3C/issues) with detailed information, or contact the Waveshare team with your order number for technical support.
 
-If you encounter any issues:
+## License
 
-- Check the [Issues](https://github.com/waveshareteam/ESP32-S3-Touch-LCD-4.3C/issues) section.
-- Create a new issue with detailed information.
-- Refer to the documentation for troubleshooting tips.
-- Contact the Waveshare team and provide the order number to obtain technical support.
-
----
-
-## 📜 License
-
-This repository is licensed under the Apache License License. See the [LICENSE](LICENSE) file for details.
-
----
-
-## 🙌 Acknowledgments
-
-- Waveshare for their excellent hardware platforms and software support
-- The Espressif Team for their continuous support.
-- Open-source contributors who make these projects possible.
+Licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
 
 ---
 
