@@ -1,0 +1,33 @@
+name: Validate Factory Firmware Integrity
+
+on:
+  push:
+    paths:
+      - ".github/workflows/factory-integrity.yml"
+      - "config/factory-firmware.json"
+      - "firmware/*.bin"
+      - "releases/validate_factory_firmware.py"
+      - "releases/tests/test_validate_factory_firmware.py"
+  pull_request:
+    paths:
+      - ".github/workflows/factory-integrity.yml"
+      - "config/factory-firmware.json"
+      - "firmware/*.bin"
+      - "releases/validate_factory_firmware.py"
+      - "releases/tests/test_validate_factory_firmware.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate factory image metadata and digest
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run validator tests
+        run: python3 -m unittest discover -s releases/tests -p "test_validate_factory_firmware.py"
+      - name: Validate checked-in factory firmware
+        run: python3 releases/validate_factory_firmware.py

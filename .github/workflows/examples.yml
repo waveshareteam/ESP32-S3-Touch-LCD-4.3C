@@ -1,0 +1,230 @@
+name: Build Examples and Firmware
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - dev
+    tags:
+      - "v*"
+    paths:
+      - ".github/workflows/examples.yml"
+      - "config/ci.json"
+      - "scripts/discover_examples.py"
+      - "scripts/tests/test_discover_examples.py"
+      - "releases/package_firmware.py"
+      - "releases/validate_firmware.py"
+      - "releases/tests/test_package_firmware.py"
+      - "examples/esp-idf/**"
+      - "examples/arduino/**"
+  pull_request:
+    paths:
+      - ".github/workflows/examples.yml"
+      - "config/ci.json"
+      - "scripts/discover_examples.py"
+      - "scripts/tests/test_discover_examples.py"
+      - "releases/package_firmware.py"
+      - "releases/validate_firmware.py"
+      - "releases/tests/test_package_firmware.py"
+      - "examples/esp-idf/**"
+      - "examples/arduino/**"
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "all, an example name, or a repo-relative example path"
+        required: false
+        default: "all"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: examples-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-tooling:
+    name: Validate CI and release tooling
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run unit tests
+        run: |
+          python3 -m unittest discover -s scripts/tests -p "test_*.py"
+          python3 releases/tests/test_package_firmware.py
+      - name: Validate Python and configuration syntax
+        run: |
+          python3 -m py_compile scripts/discover_examples.py releases/*.py
+          python3 -m json.tool config/ci.json >/dev/null
+      - name: Check the first-party inventory
+        run: |
+          python3 scripts/discover_examples.py --surface esp-idf --expect-examples 14 >/dev/null
+          python3 scripts/discover_examples.py --surface arduino --expect-examples 15 >/dev/null
+      - name: Validate the manual selector
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          TARGET_SELECTOR: ${{ inputs.target || 'all' }}
+        run: |
+          python3 scripts/discover_examples.py --surface esp-idf --selector "$TARGET_SELECTOR" >/dev/null ||
+            python3 scripts/discover_examples.py --surface arduino --selector "$TARGET_SELECTOR" >/dev/null
+
+  discover-esp-idf:
+    name: Discover ESP-IDF examples
+    needs: validate-tooling
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.discover.outputs.matrix }}
+      count: ${{ steps.discover.outputs.count }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: discover
+        env:
+          TARGET_SELECTOR: ${{ inputs.target || 'all' }}
+        run: |
+          python3 scripts/discover_examples.py \
+            --surface esp-idf \
+            --selector "$TARGET_SELECTOR" \
+            --allow-empty-selector \
+            --expect-examples 14 \
+            --github-output "$GITHUB_OUTPUT"
+
+  build-esp-idf:
+    name: ESP-IDF ${{ matrix.idf }} / ${{ matrix.name }}
+    needs: discover-esp-idf
+    if: needs.discover-esp-idf.outputs.count != '0'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    container: espressif/idf:${{ matrix.idf }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.discover-esp-idf.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build ${{ matrix.path }}
+        shell: bash
+        env:
+          EXAMPLE_PATH: ${{ matrix.path }}
+          EXAMPLE_SLUG: ${{ matrix.slug }}
+          FRAMEWORK_VERSION: ${{ matrix.idf }}
+          BUILD_TARGET: ${{ matrix.target }}
+        run: |
+          . "$IDF_PATH/export.sh"
+          build_dir="$GITHUB_WORKSPACE/.ci-build/esp-idf/$EXAMPLE_SLUG-$FRAMEWORK_VERSION"
+          idf.py --version
+          idf.py -C "$EXAMPLE_PATH" -B "$build_dir" set-target "$BUILD_TARGET" build
+      - name: Package and validate firmware
+        shell: bash
+        env:
+          EXAMPLE_PATH: ${{ matrix.path }}
+          EXAMPLE_SLUG: ${{ matrix.slug }}
+          FRAMEWORK_VERSION: ${{ matrix.idf }}
+          BUILD_TARGET: ${{ matrix.target }}
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          build_dir="$GITHUB_WORKSPACE/.ci-build/esp-idf/$EXAMPLE_SLUG-$FRAMEWORK_VERSION"
+          SOURCE_DATE_EPOCH="$(git show -s --format=%ct "$SOURCE_SHA")"
+          export SOURCE_DATE_EPOCH
+          python3 releases/package_firmware.py \
+            --framework esp-idf \
+            --project "$EXAMPLE_PATH" \
+            --build-dir "$build_dir" \
+            --name "ESP32-S3-Touch-LCD-4.3C-$EXAMPLE_SLUG-esp-idf-$FRAMEWORK_VERSION-$BUILD_TARGET" \
+            --framework-version "$FRAMEWORK_VERSION" \
+            --target "$BUILD_TARGET" \
+            --git-sha "$SOURCE_SHA" \
+            --output-dir release-artifacts
+          python3 releases/validate_firmware.py release-artifacts/*.zip
+      - name: Upload firmware artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware-esp-idf-${{ matrix.slug }}-${{ matrix.idf }}
+          path: release-artifacts/*.zip
+          if-no-files-found: error
+
+  discover-arduino:
+    name: Discover Arduino sketches
+    needs: validate-tooling
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.discover.outputs.matrix }}
+      count: ${{ steps.discover.outputs.count }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: discover
+        env:
+          TARGET_SELECTOR: ${{ inputs.target || 'all' }}
+        run: |
+          python3 scripts/discover_examples.py \
+            --surface arduino \
+            --selector "$TARGET_SELECTOR" \
+            --allow-empty-selector \
+            --expect-examples 15 \
+            --github-output "$GITHUB_OUTPUT"
+
+  build-arduino:
+    name: Arduino ${{ matrix.core }} / ${{ matrix.name }}
+    needs: discover-arduino
+    if: needs.discover-arduino.outputs.count != '0'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.discover-arduino.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: arduino/setup-arduino-cli@v2
+        with:
+          version: ${{ matrix.cli }}
+      - name: Install ESP32 Arduino core
+        env:
+          ARDUINO_CORE: ${{ matrix.core }}
+        run: |
+          arduino-cli config init --overwrite
+          arduino-cli config add board_manager.additional_urls https://espressif.github.io/arduino-esp32/package_esp32_index.json
+          arduino-cli core update-index
+          arduino-cli core install "esp32:esp32@$ARDUINO_CORE"
+      - name: Compile ${{ matrix.path }}
+        shell: bash
+        env:
+          EXAMPLE_PATH: ${{ matrix.path }}
+          EXAMPLE_SLUG: ${{ matrix.slug }}
+          FRAMEWORK_VERSION: ${{ matrix.core }}
+          BOARD_FQBN: ${{ matrix.fqbn }}
+        run: |
+          build_dir="$GITHUB_WORKSPACE/.ci-build/arduino/$EXAMPLE_SLUG-$FRAMEWORK_VERSION"
+          arduino-cli compile \
+            --fqbn "$BOARD_FQBN" \
+            --libraries examples/arduino/libraries \
+            --export-binaries \
+            --output-dir "$build_dir" \
+            "$EXAMPLE_PATH"
+      - name: Package and validate firmware
+        shell: bash
+        env:
+          EXAMPLE_PATH: ${{ matrix.path }}
+          EXAMPLE_SLUG: ${{ matrix.slug }}
+          FRAMEWORK_VERSION: ${{ matrix.core }}
+          BUILD_TARGET: esp32s3
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          build_dir="$GITHUB_WORKSPACE/.ci-build/arduino/$EXAMPLE_SLUG-$FRAMEWORK_VERSION"
+          SOURCE_DATE_EPOCH="$(git show -s --format=%ct "$SOURCE_SHA")"
+          export SOURCE_DATE_EPOCH
+          python3 releases/package_firmware.py \
+            --framework arduino \
+            --project "$EXAMPLE_PATH" \
+            --build-dir "$build_dir" \
+            --name "ESP32-S3-Touch-LCD-4.3C-$EXAMPLE_SLUG-arduino-$FRAMEWORK_VERSION-$BUILD_TARGET" \
+            --framework-version "$FRAMEWORK_VERSION" \
+            --target "$BUILD_TARGET" \
+            --git-sha "$SOURCE_SHA" \
+            --output-dir release-artifacts
+          python3 releases/validate_firmware.py release-artifacts/*.zip
+      - name: Upload firmware artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware-arduino-${{ matrix.slug }}-${{ matrix.core }}
+          path: release-artifacts/*.zip
+          if-no-files-found: error

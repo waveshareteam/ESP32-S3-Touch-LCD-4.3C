@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "board": {
+    "name": "ESP32-S3-Touch-LCD-4.3C",
+    "module": "ESP32-S3-WROOM-1-N16R8",
+    "target": "esp32s3"
+  },
+  "esp_idf": {
+    "versions": [
+      "v5.5.5",
+      "v6.0.2"
+    ]
+  },
+  "arduino": {
+    "cli": "1.5.1",
+    "core": "3.3.11",
+    "fqbn": "esp32:esp32:esp32s3:USBMode=hwcdc,CDCOnBoot=cdc,CPUFreq=240,FlashMode=qio,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi,UploadMode=default,UploadSpeed=921600,LoopCore=1,EventsCore=1"
+  }
+}

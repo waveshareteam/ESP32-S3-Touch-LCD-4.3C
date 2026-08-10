@@ -14,13 +14,27 @@
 static const char *TAG = "main";
 
 // ===== WiFi Configuration =====
-const char* ssid     = "CQ793";
-const char* password = "12345678";
+#if __has_include("arduino_secrets.h")
+#include "arduino_secrets.h"
+#endif
+
+#ifndef WIFI_SSID
+#define WIFI_SSID "YOUR_WIFI_SSID"
+#endif
+#ifndef WIFI_PASSWORD
+#define WIFI_PASSWORD "YOUR_WIFI_PASSWORD"
+#endif
+#ifndef SERVER_IP
+#define SERVER_IP "192.168.1.100"
+#endif
+
+const char* ssid     = WIFI_SSID;
+const char* password = WIFI_PASSWORD;
 
 // ===== TCP/UDP Configuration =====
 WiFiClient tcpClient;
 WiFiUDP udp;
-const char* serverIP_Host = "192.168.1.100"; // Target Server IP
+const char* serverIP_Host = SERVER_IP; // Target Server IP
 const uint16_t tcpPort = 12345;
 const uint16_t udpPort = 12346;
 

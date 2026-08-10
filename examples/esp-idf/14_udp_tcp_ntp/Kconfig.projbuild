@@ -1,0 +1,21 @@
+menu "UDP/TCP/NTP example"
+
+    config EXAMPLE_WIFI_SSID
+        string "Wi-Fi SSID"
+        default "YOUR_WIFI_SSID"
+
+    config EXAMPLE_WIFI_PASSWORD
+        string "Wi-Fi password"
+        default "YOUR_WIFI_PASSWORD"
+        help
+            Set a WPA2 password of at least eight characters for runtime use.
+            Do not commit private credentials to sdkconfig.defaults.
+
+    config EXAMPLE_SERVER_IP
+        string "Default TCP/UDP peer IPv4 address"
+        default "192.168.1.100"
+        help
+            The example learns a peer address after receiving traffic. This
+            address is used before a peer has been learned.
+
+endmenu

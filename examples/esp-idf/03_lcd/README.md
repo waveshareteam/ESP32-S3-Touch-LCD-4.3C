@@ -40,7 +40,7 @@ The connection between ESP Board and the LCD is as follows:
                                        +-------------------+
 ```
 
-* The LCD parameters and GPIO number used by this example can be changed in [rgb_lcd_port.h](components/rgb_lcd_port.h). Especially, please pay attention to the **vendor specific initialization**, it can be different between manufacturers and should consult the LCD supplier for initialization sequence code.
+* The LCD parameters and GPIO number used by this example can be changed in [rgb_lcd_port.h](components/rgb_lcd_port/rgb_lcd_port.h). Especially, please pay attention to the **vendor specific initialization**, it can be different between manufacturers and should consult the LCD supplier for initialization sequence code.
 
 *使用汉字的朋友需要注意，如果用vs code打开，需要切换编码方式，修改成GB2312才能正常显示
 *Just use the characters and ignore the Chinese characters above.

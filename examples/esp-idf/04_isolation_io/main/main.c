@@ -17,13 +17,17 @@
 
 #define ROTATE ROTATE_0//rotate = 0, 90, 180, 270
 
+#define ISOLATION_INPUT_MASK ((1U << DI0) | (1U << DI1))
+#define ISOLATION_IO_MODE_MASK ((uint8_t)~ISOLATION_INPUT_MASK)
+
 void app_main()
 {
     // Initialize I2C communication and CH422G hardware interface
     DEV_I2C_Init();
     IO_EXTENSION_Init();
 
-    IO_EXTENSION_IO_Mode(DI0 | DI5); // Set EXIO0 and EXIO5 to input mode
+    // A cleared mode bit configures the corresponding EXIO pin as an input.
+    IO_EXTENSION_IO_Mode(ISOLATION_IO_MODE_MASK);
 
     // Initialize the Waveshare ESP32-S3 RGB LCD
     waveshare_esp32_s3_rgb_lcd_init(); 
@@ -105,6 +109,4 @@ void app_main()
 
         
     
-}   
-   
-   
+}

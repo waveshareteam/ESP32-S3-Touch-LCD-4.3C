@@ -65,7 +65,7 @@ The connection between ESP Board and the LCD is as follows:
 |                       |              |                   |
 |                 GPIO44+--------------+SCLK               |
 |                       |              |                   |
-|                 GPIO4+--------------+MCLK                |
+|                 GPIO6+--------------+MCLK                |
 |                       |              |                   |
 |                 GPIO16+--------------+LCLK               |
 |                       |              |                   |

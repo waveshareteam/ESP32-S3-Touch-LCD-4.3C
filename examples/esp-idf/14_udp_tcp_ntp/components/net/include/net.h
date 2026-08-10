@@ -5,9 +5,9 @@
 #include "freertos/event_groups.h"
 
 // WiFi configuration
-#define EXAMPLE_ESP_WIFI_SSID      "CQ793"
-#define EXAMPLE_ESP_WIFI_PASS      "123456789"
-#define EXAMPLE_SERVER_IP          "192.168.137.1"
+#define EXAMPLE_ESP_WIFI_SSID      CONFIG_EXAMPLE_WIFI_SSID
+#define EXAMPLE_ESP_WIFI_PASS      CONFIG_EXAMPLE_WIFI_PASSWORD
+#define EXAMPLE_SERVER_IP          CONFIG_EXAMPLE_SERVER_IP
 #define EXAMPLE_TCP_PORT           12345
 #define EXAMPLE_UDP_PORT           12346
 

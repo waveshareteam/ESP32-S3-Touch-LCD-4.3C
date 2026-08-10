@@ -10,3 +10,16 @@ sdkconfig
 sdkconfig.old
 managed_components/
 dependencies.lock
+
+# Python
+__pycache__/
+*.py[cod]
+
+# CI and release tooling
+/.ci-build/
+/release-artifacts/
+/releases/dist/
+/releases/downloads/
+
+# Local audit and render output
+/tmp/

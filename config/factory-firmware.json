@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "name": "ESP32-S3-Touch-LCD-4.3C-Factory",
+  "board": "ESP32-S3-Touch-LCD-4.3C",
+  "hardware_variant": "ESP32-S3-WROOM-1-N16R8",
+  "target": "esp32s3",
+  "image": "firmware/ESP32-S3-Touch-LCD-4.3C-Test.bin",
+  "offset": "0x0",
+  "size": 13468509,
+  "sha256": "6b234b9cd9d166f66bec973c71685aa654017800d23075aff78e7715feb140c8",
+  "sdcard_resources_included": false
+}

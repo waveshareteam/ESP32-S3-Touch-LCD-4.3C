@@ -12,6 +12,7 @@
  ******************************************************************************/
 
 #include "rgb_lcd_port.h"
+#include "esp_idf_version.h"
 
 
 const char *TAG = "rgb_lcd_port";
@@ -53,11 +54,16 @@ esp_lcd_panel_handle_t waveshare_esp32_s3_rgb_lcd_init()
             },
         },
         .data_width = EXAMPLE_RGB_DATA_WIDTH,                    // Data width for RGB signals
+#if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(6, 0, 0)
+        .in_color_format = LCD_COLOR_FMT_RGB565,                 // Framebuffer color format
+        .dma_burst_size = 64,                                    // DMA burst size in bytes
+#else
         .bits_per_pixel = EXAMPLE_RGB_BIT_PER_PIXEL,             // Number of bits per pixel (color depth)
-        .num_fbs = EXAMPLE_LCD_RGB_BUFFER_NUMS,                  // Number of framebuffers for double/triple buffering
-        .bounce_buffer_size_px = EXAMPLE_RGB_BOUNCE_BUFFER_SIZE, // Bounce buffer size in pixels
         .sram_trans_align = 4,                                   // SRAM transaction alignment in bytes
         .psram_trans_align = 64,                                 // PSRAM transaction alignment in bytes
+#endif
+        .num_fbs = EXAMPLE_LCD_RGB_BUFFER_NUMS,                  // Number of framebuffers for double/triple buffering
+        .bounce_buffer_size_px = EXAMPLE_RGB_BOUNCE_BUFFER_SIZE, // Bounce buffer size in pixels
         .hsync_gpio_num = EXAMPLE_LCD_IO_RGB_HSYNC,              // GPIO for horizontal sync signal
         .vsync_gpio_num = EXAMPLE_LCD_IO_RGB_VSYNC,              // GPIO for vertical sync signal
         .de_gpio_num = EXAMPLE_LCD_IO_RGB_DE,                    // GPIO for data enable signal
