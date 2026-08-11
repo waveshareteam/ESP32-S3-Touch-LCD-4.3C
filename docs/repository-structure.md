@@ -16,7 +16,7 @@ This repository separates maintained source examples, immutable hardware referen
 | `docs/` | Maintainer and user documentation |
 | `.github/` | CI workflows and collaboration templates |
 
-Only direct ESP-IDF projects and direct Arduino sketches are product CI inputs. The legacy `examples/arduino/examples/` entry contains a migration note only. Nested `CMakeLists.txt` files and sketches below `examples/arduino/libraries/` belong to vendored dependencies and are not independently built.
+Only direct ESP-IDF projects and direct Arduino sketches are product CI inputs. Nested `CMakeLists.txt` files and sketches below `examples/arduino/libraries/` belong to vendored dependencies and are not independently built.
 
 `build/`, `managed_components/`, dependency locks, packaged archives, and downloaded workflow artifacts are generated locally or by CI and must remain untracked. Factory files under `firmware/` are checked-in release inputs, not outputs of the source-build workflow.
 
