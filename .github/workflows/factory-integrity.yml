@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Run validator tests
         run: python3 -m unittest discover -s releases/tests -p "test_validate_factory_firmware.py"
       - name: Validate checked-in factory firmware

@@ -53,7 +53,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Run unit tests
         run: |
           python3 -m unittest discover -s scripts/tests -p "test_*.py"
@@ -82,7 +82,7 @@ jobs:
       matrix: ${{ steps.discover.outputs.matrix }}
       count: ${{ steps.discover.outputs.count }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - id: discover
         env:
           TARGET_SELECTOR: ${{ inputs.target || 'all' }}
@@ -105,7 +105,7 @@ jobs:
       fail-fast: false
       matrix: ${{ fromJSON(needs.discover-esp-idf.outputs.matrix) }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Build ${{ matrix.path }}
         shell: bash
         env:
@@ -155,7 +155,7 @@ jobs:
       matrix: ${{ steps.discover.outputs.matrix }}
       count: ${{ steps.discover.outputs.count }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - id: discover
         env:
           TARGET_SELECTOR: ${{ inputs.target || 'all' }}
@@ -177,7 +177,7 @@ jobs:
       fail-fast: false
       matrix: ${{ fromJSON(needs.discover-arduino.outputs.matrix) }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: arduino/setup-arduino-cli@v2
         with:
           version: ${{ matrix.cli }}
@@ -243,7 +243,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Download firmware artifacts
         uses: actions/download-artifact@v4
         with:
