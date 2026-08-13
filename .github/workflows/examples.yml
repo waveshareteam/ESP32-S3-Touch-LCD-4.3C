@@ -137,7 +137,7 @@ jobs:
             --output-dir release-artifacts
           python3 releases/validate_firmware.py release-artifacts/*.zip
       - name: Upload firmware artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: firmware-esp-idf-${{ matrix.slug }}-${{ matrix.idf }}
           path: release-artifacts/*.zip
@@ -223,7 +223,7 @@ jobs:
             --output-dir release-artifacts
           python3 releases/validate_firmware.py release-artifacts/*.zip
       - name: Upload firmware artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: firmware-arduino-${{ matrix.slug }}-${{ matrix.core }}
           path: release-artifacts/*.zip
