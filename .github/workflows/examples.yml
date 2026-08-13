@@ -124,7 +124,7 @@ jobs:
           SOURCE_SHA: ${{ github.sha }}
         run: |
           build_dir="$GITHUB_WORKSPACE/.ci-build/esp-idf/$EXAMPLE_SLUG-$FRAMEWORK_VERSION"
-          SOURCE_DATE_EPOCH="$(git show -s --format=%ct "$SOURCE_SHA")"
+          SOURCE_DATE_EPOCH="$(git -c safe.directory="$GITHUB_WORKSPACE" show -s --format=%ct "$SOURCE_SHA")"
           export SOURCE_DATE_EPOCH
           python3 releases/package_firmware.py \
             --framework esp-idf \
