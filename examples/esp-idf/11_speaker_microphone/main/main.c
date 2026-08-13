@@ -13,7 +13,6 @@
 #include "gt911.h"        // GT911 touch controller
 #include "sd.h"           // SD card (not used directly here)
 #include "codec_dev.h"    // Codec driver
-#include "format_wav.h"   // WAV formatting (not used directly here)
 #include "esp_check.h"    // Error handling macros
 
 static const char *TAG = "main";

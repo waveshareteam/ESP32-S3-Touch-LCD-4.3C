@@ -14,8 +14,10 @@ on:
       - "scripts/discover_examples.py"
       - "scripts/tests/test_discover_examples.py"
       - "releases/package_firmware.py"
+      - "releases/validate_release_artifacts.py"
       - "releases/validate_firmware.py"
       - "releases/tests/test_package_firmware.py"
+      - "releases/tests/test_validate_release_artifacts.py"
       - "examples/esp-idf/**"
       - "examples/arduino/**"
   pull_request:
@@ -25,8 +27,10 @@ on:
       - "scripts/discover_examples.py"
       - "scripts/tests/test_discover_examples.py"
       - "releases/package_firmware.py"
+      - "releases/validate_release_artifacts.py"
       - "releases/validate_firmware.py"
       - "releases/tests/test_package_firmware.py"
+      - "releases/tests/test_validate_release_artifacts.py"
       - "examples/esp-idf/**"
       - "examples/arduino/**"
   workflow_dispatch:
@@ -53,7 +57,7 @@ jobs:
       - name: Run unit tests
         run: |
           python3 -m unittest discover -s scripts/tests -p "test_*.py"
-          python3 releases/tests/test_package_firmware.py
+          python3 -m unittest discover -s releases/tests -p "test_*.py"
       - name: Validate Python and configuration syntax
         run: |
           python3 -m py_compile scripts/discover_examples.py releases/*.py
@@ -231,7 +235,7 @@ jobs:
 
   release:
     name: Publish GitHub Release
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: always() && startsWith(github.ref, 'refs/tags/v')
     needs:
       - build-esp-idf
       - build-arduino
@@ -239,12 +243,15 @@ jobs:
     permissions:
       contents: write
     steps:
+      - uses: actions/checkout@v4
       - name: Download firmware artifacts
         uses: actions/download-artifact@v4
         with:
           pattern: firmware-*
           path: release-artifacts
           merge-multiple: true
+      - name: Validate complete example firmware set
+        run: python3 releases/validate_release_artifacts.py release-artifacts
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
