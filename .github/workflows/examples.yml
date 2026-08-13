@@ -228,3 +228,29 @@ jobs:
           name: firmware-arduino-${{ matrix.slug }}-${{ matrix.core }}
           path: release-artifacts/*.zip
           if-no-files-found: error
+
+  release:
+    name: Publish GitHub Release
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs:
+      - build-esp-idf
+      - build-arduino
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download firmware artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: firmware-*
+          path: release-artifacts
+          merge-multiple: true
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          gh release create "$GITHUB_REF_NAME"
+          release-artifacts/*.zip
+          --repo "$GITHUB_REPOSITORY"
+          --verify-tag
+          --generate-notes
