@@ -110,7 +110,11 @@ esp_lcd_panel_handle_t waveshare_esp32_s3_rgb_lcd_init()
 
     esp_lcd_rgb_panel_event_callbacks_t cbs = {
 #if EXAMPLE_RGB_BOUNCE_BUFFER_SIZE > 0
+#if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(6, 0, 0)
+        .on_frame_buf_complete = rgb_lcd_on_vsync_event, // Callback for frame buffer completion
+#else
         .on_bounce_frame_finish = rgb_lcd_on_vsync_event, // Callback for bounce frame finish
+#endif
 #else
         .on_vsync = rgb_lcd_on_vsync_event, // Callback for vertical sync
 #endif

@@ -69,13 +69,15 @@ timestamp when reproducible ZIP bytes are required.
 ## Download CI Artifacts
 
 Download all firmware artifacts from the latest successful workflow run on the
-current branch:
+repository's default branch:
 
 ```bash
 python3 releases/download_artifacts.py --clean
 ```
 
-Pass `--run-id <id>`, `--artifact <exact-name>`, or `--pattern "firmware-esp-idf-*"`
-to select a run or artifact. Authentication is read from `GH_TOKEN`,
+Pass `--branch <name>`, `--run-id <id>`, `--artifact <exact-name>`, or
+`--pattern "firmware-esp-idf-*"` to select a branch, run, or artifact. If the
+selected branch has no successful run, the error includes the latest run's
+status and URL. Authentication is read from `GH_TOKEN`,
 `GITHUB_TOKEN`, or `gh auth token`. Extracted packages are written below
 `releases/downloads/`.

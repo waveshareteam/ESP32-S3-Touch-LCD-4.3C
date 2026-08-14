@@ -7,3 +7,6 @@ include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 add_compile_options(-fdiagnostics-color=always -Wno-attributes)
 add_compile_options("-Wno-attributes")
 project(14_UDP_TCP_NTP)
+
+idf_component_get_property(audio_player_lib chmorgan__esp-audio-player COMPONENT_LIB)
+target_compile_options(${audio_player_lib} PRIVATE -Wno-error=stringop-truncation)
