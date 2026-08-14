@@ -22,6 +22,7 @@ from pathlib import Path, PurePosixPath
 
 DEFAULT_REPO = "waveshareteam/ESP32-S3-Touch-LCD-4.3C"
 DEFAULT_WORKFLOW = "examples.yml"
+DEFAULT_BRANCH = "main"
 DEFAULT_OUTPUT = Path(__file__).resolve().parent / "downloads"
 API_ROOT = "https://api.github.com"
 USER_AGENT = "waveshare-esp32-s3-touch-lcd-4.3c-artifacts"
@@ -59,6 +60,17 @@ def default_repo() -> str:
     remote = run_text(["git", "config", "--get", "remote.origin.url"])
     parsed = parse_github_repo(remote) if remote else None
     return parsed or DEFAULT_REPO
+
+
+def default_branch() -> str:
+    remote_head = run_text(
+        ["git", "symbolic-ref", "--quiet", "--short", "refs/remotes/origin/HEAD"]
+    )
+    if remote_head and "/" in remote_head:
+        branch = remote_head.split("/", 1)[1].strip()
+        if branch:
+            return branch
+    return DEFAULT_BRANCH
 
 
 def token() -> str | None:
@@ -181,9 +193,27 @@ def latest_run(repo: str, workflow: str, branch: str | None, auth_token: str | N
         parameters["branch"] = branch
     url = f"{API_ROOT}/repos/{repo}/actions/workflows/{workflow_id}/runs?{urllib.parse.urlencode(parameters)}"
     runs = read_json(url, auth_token).get("workflow_runs", [])
-    if not runs:
-        raise RuntimeError(f"no successful {workflow} run found")
-    return runs[0]
+    if runs:
+        return runs[0]
+
+    branch_context = f" for branch {branch!r}" if branch else ""
+    parameters.pop("status")
+    latest_url = (
+        f"{API_ROOT}/repos/{repo}/actions/workflows/{workflow_id}/runs?"
+        f"{urllib.parse.urlencode(parameters)}"
+    )
+    latest = read_json(latest_url, auth_token).get("workflow_runs", [])
+    if latest:
+        run = latest[0]
+        state = run.get("conclusion") or run.get("status") or "unknown"
+        run_url = run.get("html_url") or (
+            f"https://github.com/{repo}/actions/runs/{run.get('id', '')}"
+        )
+        raise RuntimeError(
+            f"no successful {workflow} run found{branch_context}; "
+            f"latest run is {state}: {run_url}"
+        )
+    raise RuntimeError(f"no {workflow} runs found{branch_context}")
 
 
 def artifacts(repo: str, run_id: int, auth_token: str | None) -> list[dict]:
@@ -203,7 +233,11 @@ def main() -> int:
     parser.add_argument("--repo", default=default_repo())
     parser.add_argument("--workflow", default=DEFAULT_WORKFLOW)
     parser.add_argument("--run-id", type=int)
-    parser.add_argument("--branch", default=run_text(["git", "branch", "--show-current"]))
+    parser.add_argument(
+        "--branch",
+        default=default_branch(),
+        help="GitHub branch to query (defaults to the repository default branch).",
+    )
     parser.add_argument("--pattern", default="firmware-*")
     parser.add_argument("--artifact", action="append", help="Exact artifact name; may be repeated.")
     parser.add_argument("--output-dir", default=DEFAULT_OUTPUT.as_posix())

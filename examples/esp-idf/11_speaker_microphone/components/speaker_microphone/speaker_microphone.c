@@ -218,11 +218,11 @@ esp_codec_dev_handle_t microphone_init(void)
     // Configure codec
     es7210_codec_cfg_t es7210_cfg = {
         .ctrl_if = i2c_ctrl_if,
-        .mic_selected = ES7120_SEL_MIC1 | ES7120_SEL_MIC2 , /*!< Selected microphone */
-#if CODEC_DEFAULT_TDM 
-        .mic_selected |= ES7120_SEL_MIC3 | ES7120_SEL_MIC4, /*!< Selected microphone */
+#if CODEC_DEFAULT_TDM
+        .mic_selected = ES7210_SEL_MIC1 | ES7210_SEL_MIC2 | ES7210_SEL_MIC3 | ES7210_SEL_MIC4,
+#else
+        .mic_selected = ES7210_SEL_MIC1 | ES7210_SEL_MIC2,
 #endif
-        
     };
     const audio_codec_if_t *es7210_dev = es7210_codec_new(&es7210_cfg);
     USER_NULL_CHECK(es7210_dev, NULL);
