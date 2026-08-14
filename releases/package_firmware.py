@@ -187,10 +187,6 @@ def arduino_segments(build_dir: Path, firmware_dir: Path, package_dir: Path) -> 
     if not binaries:
         raise FileNotFoundError(f"no Arduino .bin files found in {build_dir}")
 
-    merged = next((path for path in binaries if path.name.endswith(".merged.bin")), None)
-    if merged:
-        return [copy_segment(merged, firmware_dir, package_dir, "0x0", merged.name)]
-
     selected: list[tuple[str, Path]] = []
     application_candidates: list[Path] = []
     for path in binaries:
@@ -208,6 +204,26 @@ def arduino_segments(build_dir: Path, firmware_dir: Path, package_dir: Path) -> 
             f"expected one Arduino application binary, found {len(application_candidates)} in {build_dir}"
         )
     selected.append(("0x10000", application_candidates[0]))
+    required_offsets = {"0x0", "0x8000", "0xe000", "0x10000"}
+    selected_offsets = {normalized_offset(offset) for offset, _ in selected}
+    missing_offsets = sorted(required_offsets - selected_offsets, key=parse_offset)
+    if missing_offsets:
+        raise ValueError(
+            "missing required Arduino firmware segments at offsets: "
+            + ", ".join(missing_offsets)
+        )
+    empty_offsets = sorted(
+        {
+            normalized_offset(offset)
+            for offset, path in selected
+            if path.stat().st_size == 0
+        },
+        key=parse_offset,
+    )
+    if empty_offsets:
+        raise ValueError(
+            "empty Arduino firmware segments at offsets: " + ", ".join(empty_offsets)
+        )
     return [
         copy_segment(path, firmware_dir, package_dir, offset, path.name)
         for offset, path in sorted(selected, key=lambda item: parse_offset(item[0]))

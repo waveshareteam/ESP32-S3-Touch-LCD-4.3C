@@ -202,7 +202,7 @@ jobs:
             --fqbn "$BOARD_FQBN" \
             --libraries examples/arduino/libraries \
             --export-binaries \
-            --output-dir "$build_dir" \
+            --build-path "$build_dir" \
             "$EXAMPLE_PATH"
       - name: Package and validate firmware
         shell: bash
