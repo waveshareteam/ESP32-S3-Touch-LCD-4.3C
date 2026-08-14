@@ -58,9 +58,17 @@ source segment, and creates a combined image.
 ## Arduino Build Output
 
 Use the FQBN from `config/ci.json`, export binaries to a stable build directory,
-then run the packager with `--framework arduino`. The packager prefers Arduino's
-merged image and otherwise validates the bootloader, partition table, and single
-application image layout before combining it.
+then run the packager with `--framework arduino`. The packager uses Arduino's
+exported bootloader, partition table, OTA data initializer (`boot_app0.bin`), and
+application image. It ignores the exported full-flash `.merged.bin` and creates
+a directly flashable combined image that ends at the application's actual end
+offset instead of padding it to the configured flash size.
+
+The compact image does not change the configured 16 MB flash or partition
+layout. Flashing it resets NVS and OTA state within the image range but leaves
+later data partitions, including FATFS, untouched. Run
+`python -m esptool --chip esp32s3 --port <PORT> erase-flash` first when a clean
+install is required.
 
 Pass `--git-sha "$(git rev-parse HEAD)"` for local packages so `manifest.json`
 records the source commit. Set `SOURCE_DATE_EPOCH` to that commit's Unix

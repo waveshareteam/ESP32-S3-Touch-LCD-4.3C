@@ -104,6 +104,9 @@ class PackageFirmwareTests(unittest.TestCase):
         (build / "demo.ino.partitions.bin").write_bytes(b"P" * 32)
         (build / "boot_app0.bin").write_bytes(b"O" * 32)
         (build / "demo.ino.bin").write_bytes(b"A" * 64)
+        with (build / "demo.ino.merged.bin").open("wb") as merged:
+            merged.write(b"\xe9")
+            merged.truncate(16 * 1024 * 1024)
 
         self.run_script(
             PACKAGE_SCRIPT,
@@ -128,10 +131,93 @@ class PackageFirmwareTests(unittest.TestCase):
         with zipfile.ZipFile(archive) as package:
             manifest = json.loads(package.read("arduino-demo/manifest.json"))
             self.assertEqual(manifest["framework"], "arduino")
+            combined = package.read(f"arduino-demo/{manifest['combined_bin']}")
+            self.assertEqual(len(combined), 0x10000 + 64)
             self.assertEqual(
                 {record["offset"] for record in manifest["segments"]},
                 {"0x0", "0x8000", "0xe000", "0x10000"},
             )
+            self.assertEqual(len(manifest["files"]), 5)
+            self.assertFalse(
+                any(record["file"].endswith(".merged.bin") for record in manifest["files"])
+            )
+
+    def test_arduino_merged_image_without_source_segments_is_rejected(self) -> None:
+        project = self.repo / "examples/arduino/demo"
+        project.mkdir(parents=True)
+        build = self.repo / "arduino-build"
+        build.mkdir()
+        (build / "demo.ino.merged.bin").write_bytes(b"\xe9" + b"M" * 31)
+
+        result = self.run_script(
+            PACKAGE_SCRIPT,
+            "--repo",
+            str(self.repo),
+            "--framework",
+            "arduino",
+            "--project",
+            "examples/arduino/demo",
+            "--build-dir",
+            "arduino-build",
+            expect_success=False,
+        )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("expected one Arduino application binary, found 0", result.stderr)
+
+    def test_arduino_missing_required_segment_is_rejected(self) -> None:
+        project = self.repo / "examples/arduino/demo"
+        project.mkdir(parents=True)
+        build = self.repo / "arduino-build"
+        build.mkdir()
+        (build / "demo.ino.bootloader.bin").write_bytes(b"\xe9" + b"B" * 31)
+        (build / "boot_app0.bin").write_bytes(b"O" * 32)
+        (build / "demo.ino.bin").write_bytes(b"A" * 64)
+
+        result = self.run_script(
+            PACKAGE_SCRIPT,
+            "--repo",
+            str(self.repo),
+            "--framework",
+            "arduino",
+            "--project",
+            "examples/arduino/demo",
+            "--build-dir",
+            "arduino-build",
+            expect_success=False,
+        )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn(
+            "missing required Arduino firmware segments at offsets: 0x8000",
+            result.stderr,
+        )
+
+    def test_arduino_empty_required_segment_is_rejected(self) -> None:
+        project = self.repo / "examples/arduino/demo"
+        project.mkdir(parents=True)
+        build = self.repo / "arduino-build"
+        build.mkdir()
+        (build / "demo.ino.bootloader.bin").write_bytes(b"\xe9" + b"B" * 31)
+        (build / "demo.ino.partitions.bin").write_bytes(b"P" * 32)
+        (build / "boot_app0.bin").write_bytes(b"O" * 32)
+        (build / "demo.ino.bin").write_bytes(b"")
+
+        result = self.run_script(
+            PACKAGE_SCRIPT,
+            "--repo",
+            str(self.repo),
+            "--framework",
+            "arduino",
+            "--project",
+            "examples/arduino/demo",
+            "--build-dir",
+            "arduino-build",
+            expect_success=False,
+        )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("empty Arduino firmware segments at offsets: 0x10000", result.stderr)
 
     def test_same_inputs_produce_identical_archives(self) -> None:
         self.create_esp_idf_build()
