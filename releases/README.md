@@ -57,12 +57,13 @@ source segment, and creates a combined image.
 
 ## Arduino Build Output
 
-Use the FQBN from `config/ci.json`, export binaries to a stable build directory,
-then run the packager with `--framework arduino`. The packager uses Arduino's
-exported bootloader, partition table, OTA data initializer (`boot_app0.bin`), and
-application image. It ignores the exported full-flash `.merged.bin` and creates
-a directly flashable combined image that ends at the application's actual end
-offset instead of padding it to the configured flash size.
+Use the FQBN from `config/ci.json` and compile with `--build-path` set to a stable
+build directory, then run the packager with `--framework arduino` and the same
+directory as `--build-dir`. The build path contains Arduino's bootloader,
+partition table, OTA data initializer (`boot_app0.bin`), and application image.
+The packager ignores the full-flash `.merged.bin` and creates a directly
+flashable combined image that ends at the application's actual end offset
+instead of padding it to the configured flash size.
 
 The compact image does not change the configured 16 MB flash or partition
 layout. Flashing it resets NVS and OTA state within the image range but leaves

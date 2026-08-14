@@ -29,6 +29,15 @@ class ExamplesWorkflowTests(unittest.TestCase):
             release_section.index("releases/validate_release_artifacts.py"),
         )
 
+    def test_arduino_packages_the_build_path(self) -> None:
+        workflow = WORKFLOW.read_text(encoding="utf-8")
+        arduino_section = workflow.split("  build-arduino:\n", 1)[1].split(
+            "  release:\n", 1
+        )[0]
+
+        self.assertIn('--build-path "$build_dir"', arduino_section)
+        self.assertNotIn('--output-dir "$build_dir"', arduino_section)
+
 
 if __name__ == "__main__":
     unittest.main()
